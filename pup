@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Создаем исходный массив 4х4
+        int[,] intArray = new int[4, 4]
+        {
+            { 1, 2, 3, 4 },
+            { 5, 6, 7, 8 },
+            { 9, 10, 11, 12 },
+            { 13, 14, 15, 16 }
+        };
+
+        // Преобразуем массив в double
+        double[,] doubleArray = new double[4, 4];
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                doubleArray[i, j] = intArray[i, j];
+            }
+        }
+
+        // Добавляем случайное дробное число меньше 0 к каждому элементу
+        Random rand = new Random();
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                doubleArray[i, j] += Math.Round(rand.NextDouble() * -1, rand.Next(1, 5));
+            }
+        }
+
+        // Создаем массив из дробных частей
+        List<int> fractionalParts = new List<int>();
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                int fractionalPart = (int)(Math.Abs(doubleArray[i, j] * 10000));
+                fractionalParts.Add(fractionalPart);
+            }
+        }
+
+        // Вычисляем среднее арифметическое
+        double average = 0;
+        foreach (int part in fractionalParts)
+        {
+            average += part;
+        }
+        average /= fractionalParts.Count;
+
+        // Выводим результаты
+        Console.WriteLine("Исходный массив 4x4:");
+        PrintArray(intArray);
+
+        Console.WriteLine("\nМассив double с добавленными случайными дробными числами:");
+        PrintArray(doubleArray);
+
+        Console.WriteLine("\nМассив дробных частей:");
+        PrintList(fractionalParts);
+
+        Console.WriteLine("\nСреднее арифметическое: " + average);
+    }
+
+    static void PrintArray<T>(T[,] array)
+    {
+        for (int i = 0; i < array.GetLength(0); i++)
+        {
+            for (int j = 0; j < array.GetLength(1); j++)
+            {
+                Console.Write(array[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    static void PrintList(List<int> list)
+    {
+        foreach (int item in list)
+        {
+            Console.Write(item + " ");
+        }
+        Console.WriteLine();
+    }
+}
